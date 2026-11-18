@@ -2,28 +2,36 @@
 
 GCP「ブランディング」に載せるホームページ・プライバシーポリシー URL 用。
 
-## GitHub Pages で公開する手順（推奨）
+- **リポ:** https://github.com/bravesoldier11-lgtm/gcal-oauth-branding
+- **カスタムドメイン:** `gcal.rebuild-works.xyz`（`CNAME` ファイル参照）
 
-`git config` のユーザー名 `hirokazu` は GitHub 上に存在します（https://github.com/hirokazu）。
-**この環境では `gh` が未ログインのため、プッシュは手元のターミナルで実行してください。**
+## お名前.com での DNS（ヒロが操作）
 
-```bash
-cd /Users/soldier/metan_weather_10s/docs/gcal-oauth-branding
-gh auth login   # 未ログインの場合
-gh repo create gcal-oauth-branding --public --source=. --remote=origin --push
-# または既存空リポを作ってから:
-# git init && git add index.html privacy-policy.html && git commit -m "Add OAuth branding pages"
-# git branch -M main && git remote add origin git@github.com:hirokazu/gcal-oauth-branding.git && git push -u origin main
-```
+**DNS 設定** → ホスト名などの設定 → `rebuild-works.xyz` を選択 → **DNS レコード設定を利用する**
 
-GitHub → リポジトリ **Settings → Pages** → Source: **Deploy from branch** → `main` / `/ (root)` → Save。
+| ホスト名 | TYPE | TTL | VALUE |
+|----------|------|-----|--------|
+| `gcal` | CNAME | 3600（既定で可） | `bravesoldier11-lgtm.github.io.` |
 
-## GCP に入力する URL（Pages 有効化後）
+※ 末尾のドットはお名前.com の画面では省略されても可。反映まで最大数時間。
+
+確認: `dig +short gcal.rebuild-works.xyz CNAME` で `bravesoldier11-lgtm.github.io.` が返ること。
+
+GitHub → リポ **Settings → Pages** で Custom domain が `gcal.rebuild-works.xyz`、HTTPS が有効になるまで待つ。
+
+## GCP に入力する URL（本番ブランディング）
 
 | 項目 | URL |
 |------|-----|
-| アプリのホームページ | `https://hirokazu.github.io/gcal-oauth-branding/` |
-| プライバシーポリシー | `https://hirokazu.github.io/gcal-oauth-branding/privacy-policy.html` |
-| 承認済みドメイン（追加） | `hirokazu.github.io` |
+| 承認済みドメイン | `rebuild-works.xyz` |
+| アプリのホームページ | `https://gcal.rebuild-works.xyz/` |
+| プライバシーポリシー | `https://gcal.rebuild-works.xyz/privacy-policy.html` |
 
-※ リポジトリ名を変えた場合は URL もそれに合わせて変更してください。
+Search Console で **ドメイン** プロパティ `rebuild-works.xyz` を TXT で確認してから、上記を保存。
+
+## ローカル更新
+
+```bash
+cd /Users/soldier/metan_weather_10s/docs/gcal-oauth-branding
+git add -A && git commit -m "..." && git push origin main
+```
